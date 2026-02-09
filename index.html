@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love</title>
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+<!-- Animated Background -->
+<div class="bg-overlay"></div>
+<div class="particles">
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+</div>
+
+<div class="main-container">
+<!-- Photo Frame - Premium Presentation -->
+<div class="photo-frame">
+<div class="frame-glow"></div>
+<div class="photo-container">
+<img src="pic2.png" alt="Couple Photo" class="couple-photo">
+<div class="photo-overlay"></div>
+</div>
+</div>
+
+<!-- Vinyl Player Section -->
+<div class="vinyl-section">
+<div class="vinyl-glow"></div>
+<div class="vinyl-container">
+<img src="vinyyl.png" alt="Vinyl Record" class="vinyl">
+<div class="vinyl-center"></div>
+</div>
+<div class="now-playing">
+<div class="equalizer">
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+<p>Now Playing</p>
+</div>
+</div>
+</div>
+
+<!-- Background Music -->
+<audio id="background-music" autoplay loop>
+<source src="song.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<!-- Music Control -->
+<button class="music-control" onclick="toggleMusic()" aria-label="Toggle Music">
+<svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M11 5L6 9H2v6h4l5 4V5z"/>
+<path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+</svg>
+<svg class="pause-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M11 5L6 9H2v6h4l5 4V5z"/>
+<line x1="23" y1="9" x2="17" y2="15"/>
+<line x1="17" y1="9" x2="23" y2="15"/>
+</svg>
+</button>
+
+<script>
+// Fade in animation on load
+window.addEventListener('load', () => {
+document.body.classList.add('loaded');
+tryAutoplay();
+});
+
+// Try to autoplay music
+function tryAutoplay() {
+const music = document.getElementById('background-music');
+const playPromise = music.play();
+
+if (playPromise !== undefined) {
+playPromise.then(() => {
+// Autoplay started successfully
+console.log('Autoplay started');
+}).catch(() => {
+// Autoplay was prevented, show click overlay
+showPlayOverlay();
+});
+}
+}
+
+// Show overlay to start music
+function showPlayOverlay() {
+const overlay = document.createElement('div');
+overlay.className = 'play-overlay';
+overlay.innerHTML = `
+<div class="gift-wrapper">
+<p class="gift-instruction">Click to Open</p>
+<div class="box">
+<div class="box-body">
+<div class="box-lid">
+<div class="box-bowtie"></div>
+</div>
+</div>
+</div>
+</div>
+`;
+document.body.appendChild(overlay);
+
+const boxBody = overlay.querySelector('.box-body');
+boxBody.addEventListener('click', (e) => {
+e.stopPropagation();
+boxBody.classList.add('opening');
+const music = document.getElementById('background-music');
+    
+setTimeout(() => {
+music.play();
+overlay.style.opacity = '0';
+setTimeout(() => overlay.remove(), 1500);
+}, 1200);
+});
+}
+
+// Toggle music
+function toggleMusic() {
+const music = document.getElementById('background-music');
+const playIcon = document.querySelector('.play-icon');
+const pauseIcon = document.querySelector('.pause-icon');
+if (music.paused) {
+music.play();
+playIcon.classList.remove('hidden');
+pauseIcon.classList.add('hidden');
+} else {
+music.pause();
+playIcon.classList.add('hidden');
+pauseIcon.classList.remove('hidden');
+}
+}
+
+// Auto-hide/show music control on mouse movement
+let controlTimeout;
+const musicControl = document.querySelector('.music-control');
+document.addEventListener('mousemove', () => {
+musicControl.style.opacity = '1';
+clearTimeout(controlTimeout);
+controlTimeout = setTimeout(() => {
+musicControl.style.opacity = '0.5';
+}, 3000);
+});
+</script>
+</body>
+</html>
