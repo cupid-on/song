@@ -816,3 +816,7 @@ html {
     -webkit-overflow-scrolling: none;
     overscroll-behavior: none;
 }
+
+.main-container {
+    background-color: #0f0f0f;
+}
